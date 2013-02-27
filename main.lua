@@ -15,11 +15,14 @@ window.center = Vector(window.width/2, window.height/2)
 window.textColor = {255, 255, 255, 255}
 window.bgColor = {14, 86, 167, 255}
 
+game.player1Color = {255, 155, 1, 200}
+game.player2Color = {1, 169, 118, 200}
+
 function love.load()
     love.graphics.setBackgroundColor(window.bgColor)
 
     Gamestate.registerEvents()
-    Gamestate.switch(menu, false)
+    Gamestate.switch(menu)
 end
 
 function love.update(dt)

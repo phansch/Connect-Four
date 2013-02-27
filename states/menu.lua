@@ -3,17 +3,20 @@ menu = {}
 require "libraries.LoveFrames"
 
 function menu:enter(previous, endData)
-
     self:createGUI()
 
-    if endData then
+    if previous == game then
         -- do extra stuff
+        if not endData then
+            self:extendGUI("draw", nil)
+        else
+            self:extendGUI("playerWon", endData)
+        end
     end
 
 end
 
 function menu:createGUI()
-
     local frame = loveframes.Create("frame")
     frame:SetSize(200, 120)
     frame:Center()
@@ -33,6 +36,30 @@ function menu:createGUI()
     button_quit:SetText("Exit game")
     button_quit.OnClick = function()
         love.event.quit()
+    end
+end
+
+function menu:extendGUI(type, player)
+    local endFrame = loveframes.Create("frame")
+    endFrame:SetSize(200, 120)
+    endFrame:Center()
+    endFrame:SetDraggable(false)
+    endFrame:ShowCloseButton(true)
+
+    if type == "draw" then
+        endFrame:SetName("Game Over")
+        local text = loveframes.Create("text", endFrame)
+        text:SetPos(endFrame.width/2 - 40, 50)
+        text:SetText("No one won :(")
+    elseif type == "playerWon" then
+        endFrame:SetName("Congratulations!")
+        local text = loveframes.Create("text", endFrame)
+        text:SetPos(endFrame.width/2 - 87, 50)
+
+        if player == 1 then color = game.player1Color
+        else color = game.player2Color end
+        local value = {color,"Player "..player.." has won the game!"}
+        text:SetText(value)
     end
 end
 

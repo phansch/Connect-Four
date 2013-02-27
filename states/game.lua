@@ -3,8 +3,6 @@ game = {}
 require '.classes.Board'
 
 local currentPlayer = 0
-local gameEnd = false
-local winner = 0
 local totalTurns = 0
 
 function game:enter(previous)
@@ -17,55 +15,32 @@ function game:startGame()
     board = Board()
     board:load()
     currentPlayer = 2
-    gameEnd = false
-    winner = 0
     Timer.clear()
-end
-
-function game:endGame(player)
-    gameEnd = true
-    winner = player
+    totalTurns = 0
 end
 
 function game:update(dt)
     board:update(currentPlayer)
 
     if totalTurns == 10 * 7 then
-        Signals.emit("game_over", 0)
+        Gamestate.switch(menu)
     end
 end
 
 function game:draw()
-    if not gameEnd then
-        board:draw()
-
-        -- draw current player in the top left
-        if currentPlayer == 1 then
-            love.graphics.setColor(window.textColor)
-            love.graphics.print("Player:", 10, 40)
-            love.graphics.setColor(255, 255, 0)
-            love.graphics.circle("fill", 65, 47, 8, 100)
-        elseif currentPlayer == 2 then
-            love.graphics.setColor(window.textColor)
-            love.graphics.print("Player:", 10, 40)
-            love.graphics.setColor(255, 0, 0)
-            love.graphics.circle("fill", 65, 47, 8, 100)
-        end
-    end
-
-    if gameEnd and winner ~= 0 then
+    board:draw()
+    love.graphics.setFont(love.graphics.newFont(12))
+    -- draw current player in the top left
+    if currentPlayer == 1 then
         love.graphics.setColor(window.textColor)
-        love.graphics.print("Winner: ", 300, 10)
-        if winner == 1 then
-            love.graphics.setColor(255, 255, 0)
-            love.graphics.circle("fill", 360, 15, 8, 100)
-        elseif winner == 2 then
-            love.graphics.setColor(255, 0, 0)
-            love.graphics.circle("fill", 360, 15, 8, 100)
-        end
-    elseif gameEnd and winner == 0 then
+        love.graphics.print("Player:", 10, 10)
+        love.graphics.setColor(game.player1Color)
+        love.graphics.circle("fill", 65, 17, 8, 100)
+    elseif currentPlayer == 2 then
         love.graphics.setColor(window.textColor)
-        love.graphics.print("Draw", 300, 10)
+        love.graphics.print("Player:", 10, 10)
+        love.graphics.setColor(game.player2Color)
+        love.graphics.circle("fill", 65, 17, 8, 100)
     end
 end
 
@@ -86,8 +61,4 @@ end
 
 Signals.register("coin_inserted", function()
     game:switchPlayer()
-end)
-
-Signals.register("game_over", function(player)
-    game:endGame(player)
 end)

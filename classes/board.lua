@@ -31,7 +31,7 @@ function Board:update(currentPlayer)
         elseif currentPlayer == 2 then lastPlayer = 1 end
 
         if self:isWinner(lastPlayer) then
-            Signals.emit("game_over", lastPlayer)
+            Gamestate.switch(menu, lastPlayer)
         end
     end
 end
@@ -45,13 +45,13 @@ function Board:draw()
             self.circleArgs = {"fill", cell.position.x, cell.position.y, 25, 100}
 
             if cell.player == 1 then
-                love.graphics.setColor(255, 255, 0)
+                love.graphics.setColor(game.player1Color)
                 love.graphics.circle(unpack(self.circleArgs))
             elseif cell.player == 2 then
-                love.graphics.setColor(255, 0, 0)
+                love.graphics.setColor(game.player2Color)
                 love.graphics.circle(unpack(self.circleArgs))
             else
-                love.graphics.setColor(255, 255, 255, 100)
+                love.graphics.setColor(255, 255, 255, 180)
                 love.graphics.circle("line", cell.position.x, cell.position.y, 25, 100)
             end
         end
