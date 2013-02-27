@@ -5,7 +5,7 @@
 function getCirclePoint(center, angle, radius)
     local x = math.cos(angle) * radius + center.x;
     local y = math.sin(angle) * radius + center.y;
-    return vector.new(x, y)
+    return Vector.new(x, y)
 end
 
 function drawArc(x, y, r, angle1, angle2, segments)

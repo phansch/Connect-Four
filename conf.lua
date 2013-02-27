@@ -5,8 +5,8 @@ function love.conf(t)
     t.url = "http://phansch.net"
     --t.release = true
 
-    t.screen.width = 1440
-    t.screen.height = 960
+    t.screen.width = 800
+    t.screen.height = 600
 
     -- disabling modules that are not required for this project
     t.modules.joystick = false
