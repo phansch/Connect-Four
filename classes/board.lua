@@ -16,7 +16,9 @@ function Board:load()
         self.grid[column] = {}
         for row=1,self.rows do
             self.grid[column][row] = {
-                                        player = 0, position = Vector(column * 60 + self.offset.x, row * 60 + self.offset.y)
+                                        player = 0,
+                                        position = Vector(column * 60 + self.offset.x,
+                                                            row * 60 + self.offset.y)
                                      }
         end
     end
@@ -35,8 +37,6 @@ function Board:update(currentPlayer)
 end
 
 function Board:draw()
-    -- draw board surface
-    love.graphics.setBackgroundColor(0, 0, 255)
 
     -- draw player coins
     for row=1,self.columns do
@@ -52,7 +52,7 @@ function Board:draw()
                 love.graphics.circle(unpack(self.circleArgs))
             else
                 love.graphics.setColor(255, 255, 255, 100)
-                love.graphics.circle(unpack(self.circleArgs))
+                love.graphics.circle("line", cell.position.x, cell.position.y, 25, 100)
             end
         end
     end
@@ -67,8 +67,8 @@ function Board:highlightColumn()
             local cell = self.grid[row][column]
 
             if window.mousePos:dist(cell.position) <= 25 then
-                love.graphics.print(row, 10, 10)
-                love.graphics.line(cell.position.x, 60 + self.offset.y-80, cell.position.x,60 + self.offset.y-40)
+                love.graphics.line(cell.position.x, 60 + self.offset.y-80,
+                                   cell.position.x, 60 + self.offset.y-40)
                 self.selectedColumn = row
             end
         end
@@ -93,7 +93,10 @@ function Board:isWinner(player)
 
     for column = 1, self.columns-3 do
         for row = 1, self.rows do
-            if self.grid[column][row].player == player and self.grid[column+1][row].player == player and self.grid[column+2][row].player == player and self.grid[column+3][row].player == player then
+            if self.grid[column][row].player == player and
+                self.grid[column+1][row].player == player and
+                self.grid[column+2][row].player == player and
+                self.grid[column+3][row].player == player then
                 return true
             end
         end
@@ -101,7 +104,10 @@ function Board:isWinner(player)
     -- check vertical spaces
     for column = 1, self.columns do
         for row = 1, self.rows-3 do
-            if self.grid[column][row].player == player and self.grid[column][row+1].player == player and self.grid[column][row+2].player == player and self.grid[column][row+3].player == player then
+            if self.grid[column][row].player == player and
+                self.grid[column][row+1].player == player and
+                self.grid[column][row+2].player == player and
+                self.grid[column][row+3].player == player then
                 return true
              end
         end
@@ -109,7 +115,10 @@ function Board:isWinner(player)
     -- check / diagonal spaces
     for column = 1, self.columns-3 do
         for row = 4, self.rows do
-            if self.grid[column][row].player == player and self.grid[column+1][row-1].player == player and self.grid[column+2][row-2].player == player and self.grid[column+3][row-3].player == player then
+            if self.grid[column][row].player == player and
+                self.grid[column+1][row-1].player == player and
+                self.grid[column+2][row-2].player == player and
+                self.grid[column+3][row-3].player == player then
                 return true
             end
         end
@@ -117,7 +126,10 @@ function Board:isWinner(player)
     -- check \ diagonal spaces
     for column = 1, self.columns-3 do
         for row = 1, self.rows-3 do
-            if self.grid[column][row].player == player and self.grid[column+1][row+1].player == player and self.grid[column+2][row+2].player == player and self.grid[column+3][row+3].player == player then
+            if self.grid[column][row].player == player and
+                self.grid[column+1][row+1].player == player and
+                self.grid[column+2][row+2].player == player and
+                self.grid[column+3][row+3].player == player then
                 return true
             end
         end

@@ -3,6 +3,8 @@ Signals = require "libraries.hump.signal"
 Vector = require ".libraries.hump.vector"
 Timer = require "libraries.hump.timer"
 require "libraries.Helper"
+require "states.game"
+require "states.menu"
 
 --TODO: Move these somewhere else
 window = {}
@@ -11,12 +13,13 @@ window.height = love.graphics.getHeight()
 window.mousePos = nil
 window.center = Vector(window.width/2, window.height/2)
 window.textColor = {255, 255, 255, 255}
-
-local game = require('states.game')
+window.bgColor = {14, 86, 167, 255}
 
 function love.load()
+    love.graphics.setBackgroundColor(window.bgColor)
+
     Gamestate.registerEvents()
-    Gamestate.switch(Gamestate.game)
+    Gamestate.switch(menu, false)
 end
 
 function love.update(dt)

@@ -1,5 +1,4 @@
-Gamestate.game = Gamestate.new()
-local state = Gamestate.game
+game = {}
 
 require '.classes.Board'
 
@@ -8,14 +7,13 @@ local gameEnd = false
 local winner = 0
 local totalTurns = 0
 
-function state:enter(previous)
-    self:startGame()
-    if previous == Gamestate.menu or previous == Gamestate.gameover then
+function game:enter(previous)
+    if previous == menu then
         self:startGame()
     end
 end
 
-function state:startGame()
+function game:startGame()
     board = Board()
     board:load()
     currentPlayer = 2
@@ -24,12 +22,12 @@ function state:startGame()
     Timer.clear()
 end
 
-function state:endGame(player)
+function game:endGame(player)
     gameEnd = true
     winner = player
 end
 
-function state:update(dt)
+function game:update(dt)
     board:update(currentPlayer)
 
     if totalTurns == 10 * 7 then
@@ -37,7 +35,7 @@ function state:update(dt)
     end
 end
 
-function state:draw()
+function game:draw()
     if not gameEnd then
         board:draw()
 
@@ -66,11 +64,12 @@ function state:draw()
             love.graphics.circle("fill", 360, 15, 8, 100)
         end
     elseif gameEnd and winner == 0 then
+        love.graphics.setColor(window.textColor)
         love.graphics.print("Draw", 300, 10)
     end
 end
 
-function state:switchPlayer()
+function game:switchPlayer()
     if currentPlayer == 1 then
         currentPlayer = 2
     else
@@ -79,16 +78,16 @@ function state:switchPlayer()
     totalTurns = totalTurns + 1
 end
 
-function state:mousepressed(x, y, button)
+function game:mousepressed(x, y, button)
     if button == "l" then
         Signals.emit("leftmousepressed", currentPlayer)
     end
 end
 
 Signals.register("coin_inserted", function()
-    state:switchPlayer()
+    game:switchPlayer()
 end)
 
 Signals.register("game_over", function(player)
-    state:endGame(player)
+    game:endGame(player)
 end)
