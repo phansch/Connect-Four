@@ -3,7 +3,7 @@ function love.conf(t)
     t.author = "Philipp Hansch"
     t.version = "0.8.0"
     t.url = "http://phansch.net"
-    --t.release = true
+    t.release = true
 
     t.screen.width = 800
     t.screen.height = 600

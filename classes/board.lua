@@ -67,6 +67,7 @@ function Board:highlightColumn()
             local cell = self.grid[row][column]
 
             if window.mousePos:dist(cell.position) <= 25 then
+                love.graphics.setColor(255, 255, 255, 180)
                 love.graphics.line(cell.position.x, 60 + self.offset.y-80,
                                    cell.position.x, 60 + self.offset.y-40)
                 self.selectedColumn = row
