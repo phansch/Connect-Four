@@ -6,17 +6,7 @@ require "libraries.Helper"
 require "states.game"
 require "states.menu"
 
---TODO: Move these somewhere else
-window = {}
-window.width = love.graphics.getWidth()
-window.height = love.graphics.getHeight()
-window.mousePos = nil
-window.center = Vector(window.width/2, window.height/2)
-window.textColor = {255, 255, 255, 255}
-window.bgColor = {14, 86, 167, 255}
-
-game.player1Color = {255, 155, 1, 200}
-game.player2Color = {1, 169, 118, 200}
+require "config"
 
 function love.load()
     love.graphics.setBackgroundColor(window.bgColor)
