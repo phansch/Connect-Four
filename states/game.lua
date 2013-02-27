@@ -14,7 +14,7 @@ end
 function game:startGame()
     board = Board()
     board:load()
-    currentPlayer = 2
+    currentPlayer = math.random(2)
     Timer.clear()
     totalTurns = 0
 end
@@ -61,4 +61,6 @@ end
 
 Signals.register("coin_inserted", function()
     game:switchPlayer()
+    sfx_coin_inserted:play()
+    sfx_coin_inserted:rewind()
 end)
