@@ -12,18 +12,26 @@ end}
 
 function Board:load()
     -- Create an empty board
-    for row=1,self.columns do
-        self.grid[row] = {}
-        for column=1,self.rows do
-            self.grid[row][column] = {
-                                        player = 0, position = Vector(row * 60 + self.offset.x, column * 60 + self.offset.y)
+    for column=1,self.columns do
+        self.grid[column] = {}
+        for row=1,self.rows do
+            self.grid[column][row] = {
+                                        player = 0, position = Vector(column * 60 + self.offset.x, row * 60 + self.offset.y)
                                      }
         end
     end
 end
 
-function Board:update()
+function Board:update(currentPlayer)
+    if not gameEnd then
+        --check if the last player has won
+        if currentPlayer == 1 then lastPlayer = 2
+        elseif currentPlayer == 2 then lastPlayer = 1 end
 
+        if self:isWinner(lastPlayer) then
+            Signals.emit("game_over", lastPlayer)
+        end
+    end
 end
 
 function Board:draw()
@@ -77,6 +85,44 @@ function Board:insertCoin(player)
             end
         end
     end
+end
+
+function Board:isWinner(player)
+    -- check horizontal spaces
+
+
+    for column = 1, self.columns-3 do
+        for row = 1, self.rows do
+            if self.grid[column][row].player == player and self.grid[column+1][row].player == player and self.grid[column+2][row].player == player and self.grid[column+3][row].player == player then
+                return true
+            end
+        end
+    end
+    -- check vertical spaces
+    for column = 1, self.columns do
+        for row = 1, self.rows-3 do
+            if self.grid[column][row].player == player and self.grid[column][row+1].player == player and self.grid[column][row+2].player == player and self.grid[column][row+3].player == player then
+                return true
+             end
+        end
+    end
+    -- check / diagonal spaces
+    for column = 1, self.columns-3 do
+        for row = 4, self.rows do
+            if self.grid[column][row].player == player and self.grid[column+1][row-1].player == player and self.grid[column+2][row-2].player == player and self.grid[column+3][row-3].player == player then
+                return true
+            end
+        end
+    end
+    -- check \ diagonal spaces
+    for column = 1, self.columns-3 do
+        for row = 1, self.rows-3 do
+            if self.grid[column][row].player == player and self.grid[column+1][row+1].player == player and self.grid[column+2][row+2].player == player and self.grid[column+3][row+3].player == player then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 Signals.register('leftmousepressed', function(player)
