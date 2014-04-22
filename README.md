@@ -1,4 +1,4 @@
 Connect-Four
 ============
 
-Connect-Four is my February entry for #OneGameAMonth
+[This project moved to GitLab.](https://gitlab.com/phansch/connect-four)
